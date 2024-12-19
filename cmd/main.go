@@ -3,8 +3,10 @@ package main
 import (
     "fmt"
     "io"
+    "log"
     "net/http"
     "os"
+    "html/template"
 )
 
 func main() {
@@ -24,7 +26,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
     // Проверка метода запроса
     if r.Method == http.MethodPost {
         // Получаем файл из формы
-        file, _, err := r.FormFile("file")
+        file, header, err := r.FormFile("file")
         if err != nil {
             http.Error(w, "Ошибка при получении файла", http.StatusBadRequest)
             return
@@ -32,7 +34,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
         defer file.Close()
 
         // Создаем файл на сервере
-        dst, err := os.Create("uploaded_file.pdf")
+        dst, err := os.Create(header.Filename)
         if err != nil {
             http.Error(w, "Ошибка при создании файла", http.StatusInternalServerError)
             return
@@ -49,12 +51,13 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
         fmt.Fprintln(w, "Файл успешно загружен.")
     } else {
         // Отправляем HTML-форму для загрузки файла
-        w.Header().Set("Content-Type", "text/html")
-        fmt.Fprint(w, `
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".pdf">
-                <input type="submit" value="Загрузить">
-            </form>
-        `)
+        w.Header().Set("Content-Type", "text/html; charset=utf-8")
+        template, err := template.ParseFiles("templates/formForDownload.html")
+        if err != nil {
+            err = fmt.Errorf("Ошибка при парсинге шаблона %s", "templates/formForDownload.html")
+            log.Printf("Ошибка при парсинге шаблона %v", err)
+            return
+        }
+        template.Execute(w, "")
     }
 }
