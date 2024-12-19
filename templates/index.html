@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>FileSender</title>
+        <!-- Стиль для отображения Drag and Drop -->
+        <style>
+            #drop_zone {
+                border: 2px dashed #0087F7;
+                width: 300px;
+                height: 200px;
+                text-align: center;
+                padding: 30px;
+            }
+            </style>
+    </head>
+    <body>
+        <!-- Простая загрузка файлов -->
+        <h1>FileSender</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label>
+                Файл для загрузки -> 
+              <input type="file" name="files" multiple><br>
+            </label>
+            <button type="submit"> Загрузить </button>
+        <!-- Drag and Drop -->
+        </form>
+          <div id="drop_zone">Перетяните файл сюда</div>
+            <form id="upload_form" action="/uploadWithDrop" method="post" enctype="multipart/form-data" style="display:none;">
+          <input type="file" id="file_input" name="filesDragAnDrope" multiple>
+        </form>
+    </body>
+            <!-- Скрипт для отображения Drag and Drop -->
+            <script>
+                let dropZone = document.getElementById('drop_zone');
+        
+                dropZone.addEventListener('dragover', (event) => {
+                    event.preventDefault();
+                });
+        
+                dropZone.addEventListener('drop', (event) => {
+                    event.preventDefault();
+                    let files = event.dataTransfer.files;
+                    if (files.length > 0) {
+                        document.getElementById('file_input').files = files;
+                        document.getElementById('upload_form').submit();
+                    }
+                });
+            </script>
+</html>
