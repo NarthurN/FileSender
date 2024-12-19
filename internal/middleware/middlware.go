@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"net/http"
 	"log"
+	"net/http"
 )
 
 func Logging(next http.HandlerFunc) http.HandlerFunc {
