@@ -12,7 +12,7 @@ import (
 func Index(w http.ResponseWriter, r *http.Request) {
 	// Отправляем HTML-форму для загрузки файла
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	template, err := template.ParseFiles("FileSender/templates/index.html")
+	template, err := template.ParseFiles("templates/index.html")
 	if err != nil {
 		http.Error(w, "Ошибка 500", http.StatusInternalServerError)
 		log.Printf("Ошибка при парсинге шаблона templates/index.html")
