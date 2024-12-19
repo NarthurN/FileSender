@@ -30,21 +30,21 @@
           <input type="file" id="file_input" name="filesDragAnDrope" multiple>
         </form>
     </body>
-            <!-- Скрипт для отображения Drag and Drop -->
-            <script>
-                let dropZone = document.getElementById('drop_zone');
-        
-                dropZone.addEventListener('dragover', (event) => {
-                    event.preventDefault();
-                });
-        
-                dropZone.addEventListener('drop', (event) => {
-                    event.preventDefault();
-                    let files = event.dataTransfer.files;
-                    if (files.length > 0) {
-                        document.getElementById('file_input').files = files;
-                        document.getElementById('upload_form').submit();
-                    }
-                });
-            </script>
+    <!-- Скрипт для отображения Drag and Drop -->
+    <script>
+        let dropZone = document.getElementById('drop_zone');
+
+        dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+        });
+
+        dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            let files = event.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('file_input').files = files;
+                document.getElementById('upload_form').submit();
+            }
+        });
+    </script>
 </html>
