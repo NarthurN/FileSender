@@ -28,28 +28,28 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		files := r.MultipartForm.File["files"]
 		for _, fileHeader := range files {
 			go func() {
-			// Открываем файл
-			file, err := fileHeader.Open()
-			if err != nil {
-				http.Error(w, "Ошибка при открытии файла", http.StatusBadRequest)
-				return
-			}
-			defer file.Close()
+				// Открываем файл
+				file, err := fileHeader.Open()
+				if err != nil {
+					http.Error(w, "Ошибка при открытии файла", http.StatusBadRequest)
+					return
+				}
+				defer file.Close()
 
-			// Создаем файл на сервере
-			dst, err := os.Create(fileHeader.Filename)
-			if err != nil {
-				http.Error(w, "Ошибка при создании файла", http.StatusInternalServerError)
-				return
-			}
-			defer dst.Close()
+				// Создаем файл на сервере
+				dst, err := os.Create(fileHeader.Filename)
+				if err != nil {
+					http.Error(w, "Ошибка при создании файла", http.StatusInternalServerError)
+					return
+				}
+				defer dst.Close()
 
-			// Копируем содержимое загружаемого файла
-			if _, err := io.Copy(dst, file); err != nil {
-				http.Error(w, "Ошибка при записи файла", http.StatusInternalServerError)
-				return
-			}
-			fmt.Fprintf(w, "Файл %s успешно загружен.\n", fileHeader.Filename)
+				// Копируем содержимое загружаемого файла
+				if _, err := io.Copy(dst, file); err != nil {
+					http.Error(w, "Ошибка при записи файла", http.StatusInternalServerError)
+					return
+				}
+				fmt.Fprintf(w, "Файл %s успешно загружен.\n", fileHeader.Filename)
 			}()
 		}
 	}
@@ -64,28 +64,28 @@ func UploadWithDropHandler(w http.ResponseWriter, r *http.Request) {
 		files := r.MultipartForm.File["filesDragAnDrope"]
 		for _, fileHeader := range files {
 			go func() {
-			// Открываем файл
-			file, err := fileHeader.Open()
-			if err != nil {
-				http.Error(w, "Ошибка при открытии файла", http.StatusBadRequest)
-				return
-			}
-			defer file.Close()
+				// Открываем файл
+				file, err := fileHeader.Open()
+				if err != nil {
+					http.Error(w, "Ошибка при открытии файла", http.StatusBadRequest)
+					return
+				}
+				defer file.Close()
 
-			// Создаем файл на сервере
-			dst, err := os.Create(fileHeader.Filename)
-			if err != nil {
-				http.Error(w, "Ошибка при создании файла", http.StatusInternalServerError)
-				return
-			}
-			defer dst.Close()
+				// Создаем файл на сервере
+				dst, err := os.Create(fileHeader.Filename)
+				if err != nil {
+					http.Error(w, "Ошибка при создании файла", http.StatusInternalServerError)
+					return
+				}
+				defer dst.Close()
 
-			// Копируем содержимое загружаемого файла
-			if _, err := io.Copy(dst, file); err != nil {
-				http.Error(w, "Ошибка при записи файла", http.StatusInternalServerError)
-				return
-			}
-			fmt.Fprintf(w, "Файл %s успешно загружен.\n", fileHeader.Filename)
+				// Копируем содержимое загружаемого файла
+				if _, err := io.Copy(dst, file); err != nil {
+					http.Error(w, "Ошибка при записи файла", http.StatusInternalServerError)
+					return
+				}
+				fmt.Fprintf(w, "Файл %s успешно загружен.\n", fileHeader.Filename)
 			}()
 		}
 	}
