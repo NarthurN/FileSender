@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"text/template"
@@ -27,7 +28,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 		r.ParseMultipartForm(10000)
 		files := r.MultipartForm.File["files"]
 		for _, fileHeader := range files {
-			go func() {
+			go func(fileHeader *multipart.FileHeader) {
 				// Открываем файл
 				file, err := fileHeader.Open()
 				if err != nil {
@@ -50,7 +51,7 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 					return
 				}
 				fmt.Fprintf(w, "Файл %s успешно загружен.\n", fileHeader.Filename)
-			}()
+			}(fileHeader)
 		}
 	}
 }
@@ -63,7 +64,7 @@ func UploadWithDropHandler(w http.ResponseWriter, r *http.Request) {
 		r.ParseMultipartForm(10000)
 		files := r.MultipartForm.File["filesDragAnDrope"]
 		for _, fileHeader := range files {
-			go func() {
+			go func(fileHeader *multipart.FileHeader) {
 				// Открываем файл
 				file, err := fileHeader.Open()
 				if err != nil {
@@ -86,7 +87,7 @@ func UploadWithDropHandler(w http.ResponseWriter, r *http.Request) {
 					return
 				}
 				fmt.Fprintf(w, "Файл %s успешно загружен.\n", fileHeader.Filename)
-			}()
+			}(fileHeader)
 		}
 	}
 }
